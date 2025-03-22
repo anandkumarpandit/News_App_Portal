@@ -1,6 +1,6 @@
 import { signOutSuccess } from "@/redux/user/userSlice"
-import React from "react"
-import { FaHome, FaSignOutAlt, FaUserAlt } from "react-icons/fa"
+// import React from "react"
+import { FaSignOutAlt, FaUserAlt } from "react-icons/fa"
 import { IoIosCreate, IoIosDocument } from "react-icons/io"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"

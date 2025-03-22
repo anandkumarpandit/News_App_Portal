@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select"
 import { useToast } from "@/hooks/use-toast"
 import { getFilePreview, uploadFile } from "@/lib/appwrite/uploadImage"
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
 import { useNavigate } from "react-router-dom"
@@ -19,14 +19,13 @@ import { useNavigate } from "react-router-dom"
 const CreatePost = () => {
   const { toast } = useToast()
   const navigate = useNavigate()
+  const quillRef = useRef(null) // Ref for ReactQuill editor
 
   const [file, setFile] = useState(null)
   const [imageUploadError, setImageUploadError] = useState(null)
   const [imageUploading, setImageUploading] = useState(false)
 
   const [formData, setFormData] = useState({})
-  // console.log(formData)
-
   const [createPostError, setCreatePostError] = useState(null)
 
   const handleUploadImage = async () => {
@@ -38,14 +37,12 @@ const CreatePost = () => {
       }
 
       setImageUploading(true)
-
       setImageUploadError(null)
 
       const uploadedFile = await uploadFile(file)
       const postImageUrl = getFilePreview(uploadedFile.$id)
 
       setFormData({ ...formData, image: postImageUrl })
-
       toast({ title: "Image Uploaded Successfully!" })
 
       if (postImageUrl) {
@@ -57,6 +54,26 @@ const CreatePost = () => {
 
       toast({ title: "Image upload failed!" })
       setImageUploading(false)
+    }
+  }
+
+  const handleQuillImageUpload = async () => {
+    const input = document.createElement("input")
+    input.setAttribute("type", "file")
+    input.setAttribute("accept", "image/*")
+    input.click()
+
+    input.onchange = async () => {
+      const file = input.files[0]
+      if (file) {
+        const uploadedFile = await uploadFile(file)
+        const imageUrl = getFilePreview(uploadedFile.$id)
+
+        // Insert image into the editor
+        const quill = quillRef.current.getEditor()
+        const range = quill.getSelection()
+        quill.insertEmbed(range.index, "image", imageUrl)
+      }
     }
   }
 
@@ -75,14 +92,12 @@ const CreatePost = () => {
       if (!res.ok) {
         toast({ title: "Something went wrong! Please try again." })
         setCreatePostError(data.message)
-
         return
       }
 
       if (res.ok) {
         toast({ title: "Article Published Successfully!" })
         setCreatePostError(null)
-
         navigate(`/post/${data.slug}`)
       }
     } catch (error) {
@@ -157,9 +172,21 @@ const CreatePost = () => {
         )}
 
         <ReactQuill
+          ref={quillRef}
           theme="snow"
           placeholder="Write something here..."
-          className="h-72  mb-12"
+          className="h-72 mb-12"
+          modules={{
+            toolbar: {
+              container: [
+                [{ header: [1, 2, false] }],
+                ["bold", "italic", "underline"],
+                [{ list: "ordered" }, { list: "bullet" }],
+                ["link", "image"], // Add image option
+              ],
+              handlers: { image: handleQuillImageUpload }, // Custom image handler
+            },
+          }}
           required
           onChange={(value) => {
             setFormData({ ...formData, content: value })
