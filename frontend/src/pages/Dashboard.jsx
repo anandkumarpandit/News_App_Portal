@@ -5,12 +5,13 @@ import DashboardProfile from "@/components/shared/DashboardProfile"
 import DashboardSidebar from "@/components/shared/DashboardSidebar"
 import DashboardUsers from "@/components/shared/DashboardUsers"
 import MainDashboard from "@/components/shared/MainDashboard"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
+import CreateAd from "./CreateAd"
 
 const Dashboard = () => {
   const location = useLocation()
-  const [tab, setTab] = useState("")
+  const [tab, setTab] = useState("");
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search)
@@ -38,6 +39,9 @@ const Dashboard = () => {
 
         {/* news articles */}
         {tab === "posts" && <DashboardPosts />}
+
+        {/* Ads post component */}
+        {tab === "post-ad" && <CreateAd />}
 
         {/*users */}
         {tab === "users" && <DashboardUsers />}

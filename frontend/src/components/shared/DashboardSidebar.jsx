@@ -1,33 +1,33 @@
-import { signOutSuccess } from "@/redux/user/userSlice"
+import { signOutSuccess } from "@/redux/user/userSlice";
 // import React from "react"
-import { FaComments, FaSignOutAlt, FaUserAlt, FaUsers } from "react-icons/fa"
-import { useDispatch, useSelector } from "react-redux"
-import { Link } from "react-router-dom"
-import { IoIosCreate, IoIosDocument } from "react-icons/io"
-import { MdDashboardCustomize } from "react-icons/md"
+import { FaComments, FaSignOutAlt, FaUserAlt, FaUsers } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { IoIosCreate, IoIosDocument } from "react-icons/io";
+import { MdDashboardCustomize } from "react-icons/md";
 
 const DashboardSidebar = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const { currentUser } = useSelector((state) => state.user)
+  const { currentUser } = useSelector((state) => state.user);
 
   const handleSignout = async () => {
     try {
       const res = await fetch("/api/user/signout", {
         method: "POST",
-      })
+      });
 
-      const data = await res.json()
+      const data = await res.json();
 
       if (!res.ok) {
-        console.log(data.message)
+        console.log(data.message);
       } else {
-        dispatch(signOutSuccess())
+        dispatch(signOutSuccess());
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   return (
     <aside className="h-screen w-64 bg-slate-200 text-slate-800 flex flex-col">
@@ -66,9 +66,22 @@ const DashboardSidebar = () => {
               <Link
                 to={"/create-post"}
                 className="flex items-center p-2 hover:bg-slate-300 rounded"
+
               >
                 <IoIosCreate className="mr-3" />
                 <span>Create Post</span>
+              </Link>
+            </li>
+          )}
+
+          {currentUser && currentUser.isAdmin && (
+            <li>
+              <Link
+                to={"/create-ad"}
+                className="flex items-center p-2 hover:bg-slate-300 rounded"
+              >
+                <IoIosCreate className="mr-3" />
+                <span>Post Ads</span>
               </Link>
             </li>
           )}
@@ -121,7 +134,7 @@ const DashboardSidebar = () => {
         </div>
       </nav>
     </aside>
-  )
-}
+  );
+};
 
-export default DashboardSidebar
+export default DashboardSidebar;
