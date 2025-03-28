@@ -44,3 +44,14 @@ Start the server
 ```bash
   npm run start
 ```
+
+
+## Screenshots
+
+![App Screenshot](https://res.cloudinary.com/dbzjoc5rr/image/upload/v1743155837/zr4ngycfzvjlllfxx3uc.png)
+
+![App Screenshot](https://res.cloudinary.com/dbzjoc5rr/image/upload/v1743157003/wjwy0g5mlk6es224gttx.png)
+
+![App Screenshot](https://res.cloudinary.com/dbzjoc5rr/image/upload/v1743157050/r1jhk6sgclu06zv5jknr.png)
+
+![App Screenshot](https://res.cloudinary.com/dbzjoc5rr/image/upload/v1743157137/dxy24oloseknz3bpije8.png)
