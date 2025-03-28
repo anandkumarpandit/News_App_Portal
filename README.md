@@ -1,9 +1,6 @@
-# Project Title
-
-A brief description of what this project does and who it's for
+# News_App_Portal
 
 Welcome to the Morning Dispatch! Stay informed with the latest headlines from top newspapers in India and the USA. As a registered user, you can personalize your news feed.Engage in discussions by commenting on articles and sharing your perspectives with our community.
-
 
 ## Tech Stack
 
@@ -22,7 +19,7 @@ Clone the project
 Go to the project directory
 cd frontend
 
-Install dependencies for frontend 
+Install dependencies 
 
 ```bash
   npm install
@@ -36,7 +33,7 @@ Start the server
 
 cd backend
 
-Install dependencies for frontend 
+Install dependencies  
 
 ```bash
   npm install
