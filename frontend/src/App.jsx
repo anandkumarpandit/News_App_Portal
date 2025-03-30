@@ -1,4 +1,4 @@
-import { BrowserRouter, HashRouter, Route, Routes } from "react-router-dom"
+import { BrowserRouter,Route, Routes } from "react-router-dom"
 import SignInForm from "./auth/forms/SignInForm"
 import SignUpForm from "./auth/forms/SignUpForm"
 import Home from "./pages/Home"
@@ -20,7 +20,7 @@ import CreateAd from "./pages/CreateAd"
 
 const App = () => {
   return (
-    <HashRouter>
+    
     <BrowserRouter>
       <Header />
       <ScrollToTop />
@@ -50,7 +50,7 @@ const App = () => {
 
       <Toaster />
     </BrowserRouter>
-    </HashRouter>
+    
   )
 }
 
