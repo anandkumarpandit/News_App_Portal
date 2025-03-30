@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { getFilePreview, uploadFile } from "@/lib/appwrite/uploadImage";
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useSelector } from "react-redux";
@@ -21,17 +21,12 @@ const EditPost = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { postId } = useParams();
-  const quillRef = useRef(null);
   const { currentUser } = useSelector((state) => state.user);
 
   const [file, setFile] = useState(null);
+  const [imageUploadError, setImageUploadError] = useState(null);
   const [imageUploading, setImageUploading] = useState(false);
-  const [formData, setFormData] = useState({
-    title: "",
-    category: "",
-    content: "",
-    image: "",
-  });
+  const [formData, setFormData] = useState(null);
   const [updatePostError, setUpdatePostError] = useState(null);
 
   useEffect(() => {
@@ -39,47 +34,74 @@ const EditPost = () => {
       try {
         const res = await fetch(`/api/post/getposts?postId=${postId}`);
         const data = await res.json();
-        if (!res.ok) throw new Error(data.message);
-        setFormData(data.posts[0]);
+
+        if (!res.ok || !data.posts || data.posts.length === 0) {
+          console.log("Error fetching post:", data.message);
+          setUpdatePostError("Post not found.");
+          return;
+        }
+
+        console.log("Fetched Post Data:", data.posts[0]);
+        setFormData(data.posts[0]); // ✅ Correctly setting post data
       } catch (error) {
-        setUpdatePostError(error.message);
+        console.log("Fetch Error:", error.message);
+        setUpdatePostError("Failed to fetch post.");
       }
     };
+
     fetchPost();
   }, [postId]);
 
   const handleUploadImage = async () => {
-    if (!file) {
-      toast({ title: "Please select an image!" });
-      return;
-    }
-    setImageUploading(true);
     try {
+      if (!file) {
+        setImageUploadError("Please select an image!");
+        toast({ title: "Please select an image!" });
+        return;
+      }
+
+      setImageUploading(true);
+      setImageUploadError(null);
+
       const uploadedFile = await uploadFile(file);
       const postImageUrl = getFilePreview(uploadedFile.$id);
-      setFormData({ ...formData, image: postImageUrl });
+      setFormData((prev) => ({ ...prev, image: postImageUrl }));
+
       toast({ title: "Image Uploaded Successfully!" });
-    } catch {
+      setImageUploading(false);
+    } catch (error) {
+      setImageUploadError("Image upload failed");
+      console.log(error);
       toast({ title: "Image upload failed!" });
+      setImageUploading(false);
     }
-    setImageUploading(false);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData) return;
+
     try {
       const res = await fetch(`/api/post/updatepost/${postId}/${currentUser._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
+
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
+
+      if (!res.ok) {
+        toast({ title: "Something went wrong! Please try again." });
+        setUpdatePostError(data.message);
+        return;
+      }
+
       toast({ title: "Article Updated Successfully!" });
       navigate(`/post/${data.slug}`);
     } catch (error) {
-      setUpdatePostError(error.message);
-      toast({ title: "Update failed! Try again." });
+      toast({ title: "Something went wrong! Please try again." });
+      setUpdatePostError("Something went wrong! Please try again.");
     }
   };
 
@@ -102,11 +124,16 @@ const EditPost = () => {
     },
   };
 
+  if (!formData) {
+    return <p className="text-center text-lg mt-10">Loading post data...</p>;
+  }
+
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen">
       <h1 className="text-center text-3xl my-7 font-semibold text-slate-700">
         Edit Post
       </h1>
+
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
           <Input
@@ -115,16 +142,22 @@ const EditPost = () => {
             required
             id="title"
             className="w-full sm:w-3/4 h-12 border border-slate-400 focus-visible:ring-0 focus-visible:ring-offset-0"
-            value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
+            value={formData.title || ""}
           />
+
           <Select
-            onValueChange={(value) => setFormData({ ...formData, category: value })}
-            value={formData.category}
+            onValueChange={(value) =>
+              setFormData({ ...formData, category: value })
+            }
+            value={formData.category || ""}
           >
             <SelectTrigger className="w-full sm:w-1/4 h-12 border border-slate-400 focus-visible:ring-0 focus-visible:ring-offset-0">
               <SelectValue placeholder="Select a Category" />
             </SelectTrigger>
+
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Category</SelectLabel>
@@ -136,28 +169,51 @@ const EditPost = () => {
           </Select>
         </div>
 
-        {/* Image Upload */}
         <div className="flex gap-4 items-center justify-between border-4 border-slate-600 border-dotted p-3">
-          <Input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0])} />
-          <Button type="button" className="bg-slate-700" onClick={handleUploadImage}>
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setFile(e.target.files[0])}
+          />
+
+          <Button
+            type="button"
+            className="bg-slate-700"
+            onClick={handleUploadImage}
+          >
             {imageUploading ? "Uploading..." : "Upload Image"}
           </Button>
         </div>
-        {formData.image && <img src={formData.image} alt="upload" className="w-full h-72 object-cover" />}
+
+        {imageUploadError && <p className="text-red-600">{imageUploadError}</p>}
+
+        {formData.image && (
+          <img
+            src={formData.image}
+            alt="upload"
+            className="w-full h-72 object-cover"
+          />
+        )}
 
         <ReactQuill
-          ref={quillRef}
           theme="snow"
-          placeholder="Edit your content..."
+          placeholder="Write something here..."
           className="h-72 mb-12"
           modules={modules}
-          value={formData.content}
-          onChange={(value) => setFormData({ ...formData, content: value })}
+          required
+          onChange={(value) => {
+            setFormData({ ...formData, content: value });
+          }}
+          value={formData.content || ""}
         />
 
-        <Button type="submit" className="h-12 bg-green-600 font-semibold max-sm:mt-5 text-md">
+        <Button
+          type="submit"
+          className="h-12 bg-green-600 font-semibold max-sm:mt-5 text-md"
+        >
           Update Your Article
         </Button>
+
         {updatePostError && <p className="text-red-600 mt-5">{updatePostError}</p>}
       </form>
     </div>

@@ -1,44 +1,56 @@
 import { useState } from "react";
-// import { createAd } from "../services/adService"; // Import createAd function
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { createAd } from "../services/adService"; // API call function
 
-
-const CreateAd = () => {
+const AdForm = () => {
   const [formData, setFormData] = useState({
-    imageUrl: "",
-    text: "",
-    clickUrl: "",
+    image: null, // Image file
+    videoUrl: "",
+    text: "", // Ad text (rich text editor)
   });
 
   const [previewImage, setPreviewImage] = useState(null);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  // Handle text changes (rich text editor)
+  const handleTextChange = (value) => {
+    setFormData({ ...formData, text: value });
   };
 
+  // Handle video URL input
+  const handleVideoUrlChange = (e) => {
+    setFormData({ ...formData, videoUrl: e.target.value });
+  };
+
+  // Handle image upload
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result);
-        setFormData({ ...formData, imageUrl: reader.result });
-      };
-      reader.readAsDataURL(file);
+      setPreviewImage(URL.createObjectURL(file)); // Show preview
+      setFormData({ ...formData, image: file });
     }
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const formDataToSend = new FormData();
+    if (formData.image) formDataToSend.append("image", formData.image);
+    formDataToSend.append("videoUrl", formData.videoUrl);
+    formDataToSend.append("text", formData.text);
+
     try {
-      console.log("Submitting form:", formData); // Debugging log
-      const response = await createAd(formData);
+      console.log("Submitting Ad:", formData);
+      const response = await createAd(formDataToSend);
       console.log("Response:", response);
+
       alert("Ad Created Successfully!");
-      setFormData({ imageUrl: "", text: "", clickUrl: "" });
+      setFormData({ image: null, videoUrl: "", text: "" });
       setPreviewImage(null);
     } catch (error) {
       console.error("Submission failed:", error);
-      alert("Failed to create ad. Check console for errors.");
+      alert("Failed to create ad.");
     }
   };
 
@@ -50,27 +62,18 @@ const CreateAd = () => {
         <input type="file" accept="image/*" onChange={handleImageUpload} className="border p-2 w-full" />
         {previewImage && <img src={previewImage} alt="Preview" className="w-full h-40 object-cover mt-2" />}
 
-        {/* URL Input */}
+        {/* Video URL Input */}
         <input
           type="text"
-          name="clickUrl"
-          value={formData.clickUrl}
-          onChange={handleChange}
-          placeholder="Enter Ad URL"
+          name="videoUrl"
+          value={formData.videoUrl}
+          onChange={handleVideoUrlChange}
+          placeholder="Enter Video URL"
           className="border p-2 w-full"
-          required
         />
 
-        {/* Text Input */}
-        <input
-          type="text"
-          name="text"
-          value={formData.text}
-          onChange={handleChange}
-          placeholder="Enter Ad Text"
-          className="border p-2 w-full"
-          required
-        />
+        {/* Rich Text Editor */}
+        <ReactQuill value={formData.text} onChange={handleTextChange} className="bg-white border p-2" />
 
         {/* Submit Button */}
         <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded w-full">
@@ -81,4 +84,4 @@ const CreateAd = () => {
   );
 };
 
-export default CreateAd;
+export default AdForm;

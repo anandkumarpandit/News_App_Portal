@@ -4,14 +4,17 @@ import { errorHandler } from "../utils/error.js"
 // Create Ad
 export const createAd = async (req, res, next) => {
   try {
-    const { imageUrl, text } = req.body
-    const newAd = new Ad({ imageUrl, text })
-    await newAd.save()
-    res.status(201).json(newAd)
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : ""; // Get image path
+    const { text } = req.body;
+    
+    const newAd = new Ad({ imageUrl, text });
+    await newAd.save();
+    
+    res.status(201).json(newAd);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
 // Get All Ads
 export const getAds = async (req, res, next) => {

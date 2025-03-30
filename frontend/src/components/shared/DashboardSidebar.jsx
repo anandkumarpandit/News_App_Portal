@@ -68,7 +68,7 @@ const DashboardSidebar = () => {
                 className="flex items-center p-2 hover:bg-slate-300 rounded"
 
               >
-                <IoIosCreate className="mr-3" />
+                <IoIosCreate className="mr-3"/>
                 <span>Create Post</span>
               </Link>
             </li>

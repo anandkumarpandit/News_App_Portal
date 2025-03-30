@@ -159,7 +159,6 @@ const DashboardProfile = () => {
         />
 
         <div className="w-32 h-32 self-center cursor-pointer overflow-hidden">
-        onClick={() => profilePicRef.current.click()}
           <img
             src={imageFileUrl || currentUser.profilePicture}
             alt="Profile"

@@ -1,6 +1,6 @@
-import PostCard from "@/components/shared/PostCard"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import PostCard from "@/components/shared/PostCard";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -9,37 +9,37 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Separator } from "@/components/ui/separator"
-import React, { useEffect, useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Search = () => {
-  const location = useLocation()
-  const navigate = useNavigate()
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const [sidebarData, setSidebarData] = useState({
     searchTerm: "",
     sort: "desc",
     category: "",
-  })
+  });
 
   //   console.log(sidebarData)
 
-  const [posts, setPosts] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [showMore, setShowMore] = useState(false)
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [showMore, setShowMore] = useState(false);
 
-  console.log(posts)
+  console.log(posts);
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(location.search)
+    const urlParams = new URLSearchParams(location.search);
 
-    const searchTermFromUrl = urlParams.get("searchTerm")
-    const sortFromUrl = urlParams.get("sort")
-    const categoryFromUrl = urlParams.get("category")
+    const searchTermFromUrl = urlParams.get("searchTerm");
+    const sortFromUrl = urlParams.get("sort");
+    const categoryFromUrl = urlParams.get("category");
 
-    console.log(searchTermFromUrl)
+    console.log(searchTermFromUrl);
 
     if (searchTermFromUrl || sortFromUrl || categoryFromUrl) {
       setSidebarData({
@@ -47,84 +47,84 @@ const Search = () => {
         searchTerm: searchTermFromUrl || "",
         sort: sortFromUrl || "",
         category: categoryFromUrl || "",
-      })
+      });
     }
 
     const fetchPosts = async () => {
-      setLoading(true)
+      setLoading(true);
 
-      const searchQuery = urlParams.toString()
+      const searchQuery = urlParams.toString();
 
-      const res = await fetch(`/api/post/getposts?${searchQuery}`)
+      const res = await fetch(`/api/post/getposts?${searchQuery}`);
 
       if (!res.ok) {
-        setLoading(false)
-        return
+        setLoading(false);
+        return;
       }
 
       if (res.ok) {
-        const data = await res.json()
-        setPosts(data.posts)
-        setLoading(false)
+        const data = await res.json();
+        setPosts(data.posts);
+        setLoading(false);
 
         if (data.posts.length === 9) {
-          setShowMore(true)
+          setShowMore(true);
         } else {
-          setShowMore(false)
+          setShowMore(false);
         }
       }
-    }
+    };
 
-    fetchPosts()
-  }, [location.search])
+    fetchPosts();
+  }, [location.search]);
 
   const handleChange = (e) => {
     if (e.target.id === "searchTerm") {
-      setSidebarData({ ...sidebarData, searchTerm: e.target.value })
+      setSidebarData({ ...sidebarData, searchTerm: e.target.value });
     }
-  }
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const urlParams = new URLSearchParams(location.search)
+    const urlParams = new URLSearchParams(location.search);
 
-    urlParams.set("searchTerm", sidebarData.searchTerm)
-    urlParams.set("sort", sidebarData.sort)
-    urlParams.set("category", sidebarData.category)
+    urlParams.set("searchTerm", sidebarData.searchTerm);
+    urlParams.set("sort", sidebarData.sort);
+    urlParams.set("category", sidebarData.category);
 
-    const searchQuery = urlParams.toString()
+    const searchQuery = urlParams.toString();
 
-    navigate(`/search?${searchQuery}`)
-  }
+    navigate(`/search?${searchQuery}`);
+  };
 
   const handleShowMore = async () => {
-    const numberOfPosts = posts.length
-    const startIndex = numberOfPosts
-    const urlParams = new URLSearchParams(location.search)
+    const numberOfPosts = posts.length;
+    const startIndex = numberOfPosts;
+    const urlParams = new URLSearchParams(location.search);
 
-    urlParams.set("startIndex", startIndex)
+    urlParams.set("startIndex", startIndex);
 
-    const searchQuery = urlParams.toString()
+    const searchQuery = urlParams.toString();
 
-    const res = await fetch(`/api/post/getposts?${searchQuery}`)
+    const res = await fetch(`/api/post/getposts?${searchQuery}`);
 
     if (!res.ok) {
-      return
+      return;
     }
 
     if (res.ok) {
-      const data = await res.json()
+      const data = await res.json();
 
-      setPosts([...posts, ...data.posts])
+      setPosts([...posts, ...data.posts]);
 
       if (data.posts.length === 9) {
-        setShowMore(true)
+        setShowMore(true);
       } else {
-        setShowMore(false)
+        setShowMore(false);
       }
     }
-  }
+  };
 
   return (
     <div className="flex flex-col md:flex-row">
@@ -238,7 +238,7 @@ const Search = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Search
+export default Search;
