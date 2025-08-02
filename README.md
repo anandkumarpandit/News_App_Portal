@@ -1,6 +1,6 @@
 # News_App_Portal
 
-Welcome to the Morning Dispatch! Stay informed with the latest headlines from top newspapers in India and the USA. As a registered user, you can personalize your news feed.Engage in discussions by commenting on articles and sharing your perspectives with our community.
+This News App Portal is a web application where users can read the latest news and admins can post or manage news articles. The goal of this project is to provide a clean and easy-to-use platform where people can stay updated with current events.
 
 ## Tech Stack
 
