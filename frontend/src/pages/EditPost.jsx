@@ -192,6 +192,7 @@ const EditPost = () => {
             src={formData.image}
             alt="upload"
             className="w-full h-72 object-cover"
+            loading="lazy"
           />
         )}
 

@@ -14,7 +14,8 @@ import EditPost from "./pages/EditPost"
 import PostDetails from "./pages/PostDetails"
 import ScrollToTop from "./components/shared/ScrollToTop"
 import Search from "./pages/Search"
-import CreateAd from "./pages/CreateAd"
+// import CreateAd from "./pages/CreateAd"
+{/* <Route path="/create-ad" element={<CreateAd />} /> */}
 
 
 
@@ -38,7 +39,7 @@ const App = () => {
 
         <Route element={<AdminPrivateRoute />}>
           <Route path="/create-post" element={<CreatePost />} />
-          <Route path="/create-ad" element={<CreateAd />} />
+         
           <Route path="/update-post/:postId" element={<EditPost />} />
         </Route>
 

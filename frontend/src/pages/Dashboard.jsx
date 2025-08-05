@@ -7,7 +7,7 @@ import DashboardUsers from "@/components/shared/DashboardUsers"
 import MainDashboard from "@/components/shared/MainDashboard"
 import { useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
-import CreateAd from "./CreateAd"
+// import CreateAd from "./CreateAd"
 
 const Dashboard = () => {
   const location = useLocation()
@@ -41,7 +41,7 @@ const Dashboard = () => {
         {tab === "posts" && <DashboardPosts />}
 
         {/* Ads post component */}
-        {tab === "post-ad" && <CreateAd />}
+        {/* {tab === "post-ad" && <CreateAd />} */}
 
         {/*users */}
         {tab === "users" && <DashboardUsers />}

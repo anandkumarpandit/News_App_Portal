@@ -164,6 +164,7 @@ const DashboardProfile = () => {
             alt="Profile"
             className="rounded-full w-full h-full object-cover border-8 border-gray-300"
             onClick={() => profilePicRef.current.click()}
+            loading="lazy"
           />
         </div>
 

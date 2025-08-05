@@ -111,6 +111,7 @@ const Header = () => {
                   src={currentUser.profilePicture}
                   alt="user photo"
                   className="w-10 h-10 rounded-full"
+                  loading="lazy"
                 />
               </button>
             </DropdownMenuTrigger>

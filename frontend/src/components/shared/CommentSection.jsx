@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import  { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 import { Textarea } from "../ui/textarea"
@@ -145,6 +145,7 @@ const CommentSection = ({ postId }) => {
             src={currentUser.profilePicture}
             alt="Profile Pic"
             className="h-5 w-5 object-cover rounded-full"
+            loading="lazy"
           />
 
           <Link

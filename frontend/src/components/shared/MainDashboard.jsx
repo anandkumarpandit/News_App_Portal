@@ -19,9 +19,6 @@ const MainDashboard = () => {
   const [comments, setComments] = useState([])
   const [posts, setPosts] = useState([])
 
-  //   console.log(users)
-  //   console.log(comments)
-  //   console.log(posts)
 
   const [totalUsers, setTotalUsers] = useState(0)
   const [totalPosts, setTotalPosts] = useState(0)
@@ -167,6 +164,7 @@ const MainDashboard = () => {
                       src={user.profilePicture}
                       alt={user.username}
                       className="w-10 h-10 object-cover bg-gray-200 rounded-full"
+                      loading="lazy"
                     />
                   </TableCell>
 
@@ -244,6 +242,7 @@ const MainDashboard = () => {
                         src={post.image}
                         alt={post.title}
                         className="w-10 h-10 object-cover bg-gray-200 rounded-full"
+                        loading="lazy"
                       />
                     </TableCell>
 

@@ -30,6 +30,8 @@ const Advertise = () => {
           src="https://images.pexels.com/photos/723072/pexels-photo-723072.jpeg?auto=compress&cs=tinysrgb&w=600"
           alt=""
           className="w-full"
+          loading="lazy"
+          
         />
       </div>
     </div>

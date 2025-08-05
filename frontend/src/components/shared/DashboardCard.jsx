@@ -1,11 +1,11 @@
-import { TrendingUp } from "lucide-react"
+import { TrendingUp } from "lucide-react";
 import {
   Label,
   PolarGrid,
   PolarRadiusAxis,
   RadialBar,
   RadialBarChart,
-} from "recharts"
+} from "recharts";
 import {
   Card,
   CardContent,
@@ -13,13 +13,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card"
+} from "../ui/card";
 
-import { ChartContainer } from "../ui/chart"
+import { ChartContainer } from "../ui/chart";
 
 const chartData = [
   { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-]
+];
 
 const chartConfig = {
   visitors: {
@@ -29,7 +29,7 @@ const chartConfig = {
     label: "Safari",
     color: "hsl(var(--chart-2))",
   },
-}
+};
 
 const DashboardCard = ({
   title,
@@ -93,7 +93,7 @@ const DashboardCard = ({
                           Total
                         </tspan>
                       </text>
-                    )
+                    );
                   }
                 }}
               />
@@ -108,7 +108,7 @@ const DashboardCard = ({
         <div className="leading-none text-muted-foreground">{footerText}</div>
       </CardFooter>
     </Card>
-  )
-}
+  );
+};
 
-export default DashboardCard
+export default DashboardCard;

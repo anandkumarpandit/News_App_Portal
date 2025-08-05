@@ -23,8 +23,10 @@ const About = () => {
           <div className="relative">
             <img
               src="https://images.pexels.com/photos/723072/pexels-photo-723072.jpeg?auto=compress&cs=tinysrgb&w=600"
+
               alt=""
               className="rounded-lg shadow-lg hover:scale-105 transition-transform duration-300"
+              loading="lazy"
             />
           </div>
         </div>
@@ -42,6 +44,7 @@ const About = () => {
               src="https://cdn-icons-png.flaticon.com/128/3135/3135715.png"
               alt="Team member"
               className="w-32 h-32 rounded-full mx-auto mb-4"
+              loading="lazy"
             />
 
             <h3 className="text-xl font-semibold text-gray-700">
@@ -56,6 +59,7 @@ const About = () => {
               src="https://cdn-icons-png.flaticon.com/128/4140/4140037.png"
               alt="Team member"
               className="w-32 h-32 rounded-full mx-auto mb-4"
+              loading="lazy"
             />
 
             <h3 className="text-xl font-semibold text-gray-700">
@@ -70,6 +74,7 @@ const About = () => {
               src="https://cdn-icons-png.flaticon.com/128/6997/6997662.png"
               alt="Team member"
               className="w-32 h-32 rounded-full mx-auto mb-4"
+              loading="lazy"
             />
 
             <h3 className="text-xl font-semibold text-gray-700">

@@ -74,7 +74,7 @@ const DashboardSidebar = () => {
             </li>
           )}
 
-          {currentUser && currentUser.isAdmin && (
+          {/* {currentUser && currentUser.isAdmin && (
             <li>
               <Link
                 to={"/create-ad"}
@@ -84,7 +84,7 @@ const DashboardSidebar = () => {
                 <span>Post Ads</span>
               </Link>
             </li>
-          )}
+          )} */}
 
           {currentUser && currentUser.isAdmin && (
             <li>

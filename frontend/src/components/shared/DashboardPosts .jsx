@@ -26,7 +26,7 @@ const DashboardPosts = () => {
   const { currentUser } = useSelector((state) => state.user)
 
   const [userPosts, setUserPosts] = useState([])
-  // console.log(userPosts)
+  
 
   const [showMore, setShowMore] = useState(true)
   const [postIdToDelete, setPostIdToDelete] = useState("")
@@ -133,6 +133,7 @@ const DashboardPosts = () => {
                         src={post.image}
                         alt={post.title}
                         className="w-20 h-10 object-cover bg-gray-500"
+                        loading="lazy"
                       />
                     </Link>
                   </TableCell>

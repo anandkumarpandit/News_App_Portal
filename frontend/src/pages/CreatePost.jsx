@@ -40,7 +40,9 @@ const CreatePost = () => {
       const uploadedFile = await uploadFile(file);
       const postImageUrl = getFilePreview(uploadedFile.$id);
 
-      setFormData({ ...formData, image: postImageUrl });
+      //setFormData({ ...formData, image: postImageUrl });
+      setFormData((prev) => ({ ...prev, image: postImageUrl }));
+
       toast({ title: "Image Uploaded Successfully!" });
 
       if (postImageUrl) {
@@ -85,8 +87,6 @@ const CreatePost = () => {
       setCreatePostError("Something went wrong! Please try again.");
     }
   };
-
-  
 
   const modules = {
     toolbar: {
@@ -137,10 +137,18 @@ const CreatePost = () => {
 
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Category</SelectLabel>
+                {/* <SelectLabel>Category</SelectLabel> */}
                 <SelectItem value="worldnews">World News</SelectItem>
                 <SelectItem value="sportsnews">Sports News</SelectItem>
                 <SelectItem value="localnews">Local News</SelectItem>
+                <SelectItem value="indianews">India News</SelectItem>
+                <SelectItem value="nepalnews">Nepal News</SelectItem>
+                <SelectItem value="nationalnews">National News</SelectItem>
+                <SelectItem value="internationalnews">International News</SelectItem>
+                <SelectItem value="politicsnews">Politics News</SelectItem>
+
+
+
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -153,7 +161,7 @@ const CreatePost = () => {
             onChange={(e) => setFile(e.target.files[0])}
           />
 
-          <Button
+           <Button
             type="button"
             className="bg-slate-700"
             onClick={handleUploadImage}
@@ -169,6 +177,7 @@ const CreatePost = () => {
             src={formData.image}
             alt="upload"
             className="w-full h-72 object-cover"
+            loading="lazy"
           />
         )}
 

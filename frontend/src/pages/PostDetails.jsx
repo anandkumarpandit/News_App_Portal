@@ -73,6 +73,7 @@ const PostDetails = () => {
           src="https://cdn-icons-png.flaticon.com/128/39/39979.png"
           alt="loading"
           className="w-20 animate-spin"
+          loading="lazy"
         />
       </div>
     )
@@ -97,6 +98,7 @@ const PostDetails = () => {
         src={post && post.image}
         alt={post && post.title}
         className="mt-10 p-3 max-h-[500px] w-full object-cover"
+        loading="lazy"
       />
 
       <div className="flex justify-between p-3 mx-auto w-full max-w-2xl text-xs">
